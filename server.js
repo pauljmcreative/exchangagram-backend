@@ -60,7 +60,7 @@ app.get("/profileimage/:imagename", (req, res) => {
 app.get("/api/users", controllers.user.index);
 app.get("/api/users/:id", controllers.user.show);
 app.post("/api/users/signup", controllers.user.create);
-app.post("/api/users/login", controllers.user.login);
+app.post("/api/users/signin", controllers.user.login);
 app.put("/api/users/:id", controllers.user.update);
 
 // Profile Images //

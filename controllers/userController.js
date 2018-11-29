@@ -101,7 +101,7 @@ const createUser = (req, res) => {
                 console.log("Error hashing password: ", err);
                 return;
               }
-              newUser.password_digest = hash;
+              newUser.password = hash;
               newUser.save((err, user) => {
                 if (err) {
                   console.log(err);
@@ -147,21 +147,24 @@ const createUser = (req, res) => {
 // POST /api/users/login //
 const userLogin = (req, res) => {
   let username = req.body.username;
-  let password_digest = req.body.password;
+  let password = req.body.password;
   db.User.findOne({ username: username }, (err, foundUser) => {
     if (err) {
       console.log(err);
       return;
     }
 
+    console.log(foundUser);
+    console.log(req.body)
     // check for user
     if (foundUser) {
       // check password
-
+      console.log("FOUNDs")
       bcrypt
-        .compare(password_digest, foundUser.password_digest)
+        .compare(password, foundUser.password)
         .then(isMatch => {
           if (isMatch) {
+            console.log("BCRYPT")
             // user confirmed, send web token
             let user = {
               id: foundUser._id,
@@ -176,6 +179,7 @@ const userLogin = (req, res) => {
                 console.log(err);
                 return;
               }
+              console.log("JWT")
               res.json({
                 token: token
               });
