@@ -5,22 +5,29 @@ const bcrypt = require('bcryptjs');
 
 // GET /api/users //
 const getUsers = (req, res) => {
-  jwt.verify(req.token, "secretKey", (err, authData) => {
+  // jwt.verify(req.token, "secretKey", (err, authData) => {
+  //   if (err) {
+  //     res.send({ err: true, message: `No users found.` });
+  //   } else {
+  //     db.User.find({}, (err, users) => {
+  //       if (err) {
+  //         console.log(err);
+  //         return;
+  //       }
+  //       res.json({
+  //         users: users,
+  //         authData
+  //       });
+  //     });
+  //   }
+  // });
+  db.User.find({}, (err, users) => {
     if (err) {
-      res.send({ err: true, message: `No users found.` });
-    } else {
-      db.User.find({}, (err, users) => {
-        if (err) {
-          console.log(err);
-          return;
-        }
-        res.json({
-          users: users,
-          authData
-        });
-      });
+      console.log(err);
+      return;
     }
-  });
+    res.json(users)
+  })
 };
 
 // GET /api/users/:id //
@@ -89,7 +96,7 @@ const createUser = (req, res) => {
 
           // salt and hash password with bcryptjs //
           bcrypt.genSalt(10, (err, salt) => {
-            bcrypt.hash(newUser.password_digest, salt, (err, hash) => {
+            bcrypt.hash(newUser.password, salt, (err, hash) => {
               if (err) {
                 console.log("Error hashing password: ", err);
                 return;

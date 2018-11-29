@@ -1,5 +1,6 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
+const bodyParser = require('body-parser');
 const cors = require("cors");
 const app = express();
 let controllers = require('./controllers');
@@ -56,11 +57,11 @@ app.get("/profileimage/:imagename", (req, res) => {
 })
 
 // Users //
-app.get("/api/users", verifyToken, controllers.user.index);
-app.get("/api/users/:id", verifyToken, controllers.user.show);
-app.post("/api/users/create", controllers.user.create);
+app.get("/api/users", controllers.user.index);
+app.get("/api/users/:id", controllers.user.show);
+app.post("/api/users/signup", controllers.user.create);
 app.post("/api/users/login", controllers.user.login);
-app.put("/api/users/:id", verifyToken, controllers.user.update);
+app.put("/api/users/:id", controllers.user.update);
 
 // Profile Images //
 app.get("/api/profileimages/", controllers.profileImages.index);
