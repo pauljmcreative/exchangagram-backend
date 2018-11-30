@@ -31,8 +31,13 @@ const getPost = (req, res) => {
 // POST /api/posts/new/:user_id
 
 const createPost = (req, res) => {
-  let newPost = req.body;
+  console.log(req.body)
+  let newPost = {
+    caption: req.body.caption,
+    location: req.body.location
+  };
   let userId = req.params.user_id;
+
   db.Post.create(newPost, (err, createdPost) => {
     if (err) {
       console.log(err);

@@ -5,16 +5,15 @@ const Schema = mongoose.Schema;
 let comment = require("./comment");
 
 let PostSchema = new Schema({
-  post_url: {
-    type: String,
-    required: true,
-  },
-  title: String,
   location: String,
-  body: String,
+  caption: String,
   user: {
     type: Schema.Types.ObjectId,
     ref: "User"
+  },
+  likes: {
+    type: Number,
+    default: 0
   },
   dateCreated: {
     type: Date,
