@@ -1,10 +1,54 @@
-const express = require("express");
-const jwt = require("jsonwebtoken");
+const express = require('express');
+const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
-const cors = require("cors");
+const cors = require('cors');
+const multer = require('multer');
+const ejs = require('ejs');
+const path = require('path');
 const app = express();
 let controllers = require('./controllers');
 const port = process.env.PORT || 4000;
+
+
+
+
+
+// Set Storage Engine //
+const storage = multer.diskStorage({
+  destination: './public/uploads/',
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+  }
+});
+
+// Init Upload //
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 1000000 },
+  fileFilter: function (req, file, cb) {
+    checkFileType(file, cb);
+  }
+}).single('myImage');
+
+// Check File Type //
+function checkFileType(file, cb) {
+  // Allowed extensions
+  const filetypes = /jpeg|jpg|png|gif/;
+  // Check Extension
+  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+  // Check mimetype
+  const mimetype = filetypes.test(file.mimetype);
+
+  if (mimetype && extname) {
+    return cb(null, true);
+  } else {
+    cb('Error: Images Only');
+  }
+}
+
+
+
+
 
 
 // init public file //
@@ -26,7 +70,9 @@ app.use(express.json());
 app.use(cors());
 
 // Public Folder //
-app.use(express.static('public'));
+app.use(express.static('./public'));
+
+
 
 // Format of Token //
 // Authorization: Bearer <access_token> //
@@ -49,10 +95,43 @@ const verifyToken = (req, res, next) => {
   }
 }
 
-// Routes //
-app.get('/', (req, res) => res.send('Whatup fools!'));
 
-app.get("/profileimage/:imagename", (req, res) => {
+
+
+// // EJS //
+app.set('view engine', 'ejs');
+
+// Routes //
+// app.get('/', (req, res) => res.send('Whatup fools!'));
+app.get('/', (req, res) => res.render('index'));
+app.post('/upload', (req, res) => {
+  upload(req, res, (err) => {
+    if (err) {
+      res.render('index', {
+        msg: err
+      });
+    } else {
+      if (req.file == undefined) {
+        res.render('index', {
+          msg: 'Error: No File Selected!'
+        });
+      } else {
+        res.render('index', {
+          msg: 'File Uploaded!',
+          file: `uploads/${req.file.filename}`
+        });
+      }
+    }
+  });
+});
+
+
+
+
+
+
+
+app.get("/image/:imagename", (req, res) => {
   res.sendFile("public/uploads/" + req.params.imagename, { root: __dirname });
 })
 
@@ -63,10 +142,12 @@ app.post("/api/users/signup", controllers.user.create);
 app.post("/api/users/signin", controllers.user.login);
 app.put("/api/users/:id", controllers.user.update);
 
-// Profile Images //
-app.get("/api/profileimages/", controllers.profileImages.index);
-app.get("/api/profileimages/:user_id", controllers.profileImages.show);
-app.post("/api/:user_id/upload", controllers.profileImages.upload);
+// Images //
+app.get("/api/images", controllers.Images.index);
+app.get("/api/images/:user_id", controllers.Images.show);
+// app.post("/api/:user_id/upload", controllers.Images.upload);
+// app.post("/api/upload", controllers.Images.upload);
+
 
 // Posts //
 app.get("/api/posts", controllers.post.index);

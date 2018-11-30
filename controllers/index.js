@@ -5,5 +5,5 @@ module.exports = {
   // followers: require("./followersController"),
   // following: require("./followingController"),
   // likes: require("./likesController"),
-  profileImages: require("./profileImagesController"),
+  Images: require("./ImagesController"),
 }
