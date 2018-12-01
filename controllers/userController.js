@@ -83,7 +83,7 @@ const createUser = (req, res) => {
           console.log("userEmailerror");
           console.log(foundUserEmail);
 
-          res.status(400).json({ error: "Email already in use" });
+          res.status(400).send({ error: "Email already in use" });
         } else {
           // create new user
           let newUser = new db.User({
@@ -112,7 +112,7 @@ const createUser = (req, res) => {
             });
           });
 
-          let newDefaultImage = new db.ProfileImage({
+          let newDefaultImage = new db.Image({
             name: "default.png",
           })
 

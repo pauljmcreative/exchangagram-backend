@@ -11,7 +11,7 @@ let Comment = require("./comment");
 // let Follower = require("./follower");
 // let Following = require("./following");
 // let Like = require("./like");
-let ProfileImage = require("./profileImage");
+let Image = require("./Image");
 
 
 module.exports = {
@@ -21,5 +21,5 @@ module.exports = {
   // Follower: Follower,
   // Following: Following,
   // Like: Like,
-  ProfileImage: ProfileImage,
+  Image: Image,
 }

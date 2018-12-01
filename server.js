@@ -99,31 +99,31 @@ const verifyToken = (req, res, next) => {
 
 
 // // EJS //
-app.set('view engine', 'ejs');
+// app.set('view engine', 'ejs');
 
 // Routes //
 // app.get('/', (req, res) => res.send('Whatup fools!'));
-app.get('/', (req, res) => res.render('index'));
-app.post('/upload', (req, res) => {
-  upload(req, res, (err) => {
-    if (err) {
-      res.render('index', {
-        msg: err
-      });
-    } else {
-      if (req.file == undefined) {
-        res.render('index', {
-          msg: 'Error: No File Selected!'
-        });
-      } else {
-        res.render('index', {
-          msg: 'File Uploaded!',
-          file: `uploads/${req.file.filename}`
-        });
-      }
-    }
-  });
-});
+// app.get('/', (req, res) => res.render('index'));
+// app.post('/upload', (req, res) => {
+//   upload(req, res, (err) => {
+//     if (err) {
+//       res.render('index', {
+//         msg: err
+//       });
+//     } else {
+//       if (req.file == undefined) {
+//         res.render('index', {
+//           msg: 'Error: No File Selected!'
+//         });
+//       } else {
+//         res.render('index', {
+//           msg: 'File Uploaded!',
+//           file: `uploads/${req.file.filename}`
+//         });
+//       }
+//     }
+//   });
+// });
 
 
 
@@ -144,11 +144,8 @@ app.put("/api/users/:id", controllers.user.update);
 
 // Images //
 app.get("/api/images", controllers.Images.index);
-app.get("/api/images/:user_id", controllers.Images.show);
-// app.post("/api/:user_id/upload", controllers.Images.upload);
-// app.post("/api/upload", controllers.Images.upload);
-
-
+app.get("/api/images/:post_id", controllers.Images.show);
+app.post("/api/images/:post_id/upload", controllers.Images.upload);
 // Posts //
 app.get("/api/posts", controllers.post.index);
 app.get("/api/posts/:id", controllers.post.show);

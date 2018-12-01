@@ -37,10 +37,10 @@ const checkFileType = (file, cb) => {
   }
 }
 
-// GET /api/profileimages
-const profileImages = (req, res) => {
-  db.ProfileImage.find({})
-    .populate("user")
+// GET /api/images
+const Images = (req, res) => {
+  db.Image.find({})
+    // .populate("post")
     .exec((err, foundImages) => {
       if (err) {
         console.log(err);
@@ -50,10 +50,10 @@ const profileImages = (req, res) => {
     });
 }
 
-// GET /api/profileimages/:user_id
-const profileImage = (req, res) => {
-  let id = req.params.user_id;
-  db.ProfileImage.find({ user: id }, (err, foundImage) => {
+// GET /api/images/:post_id
+const Image = (req, res) => {
+  let id = req.params.post_id;
+  db.Image.find({ post: id }, (err, foundImage) => {
     if (err) {
       console.log(err);
       return;
@@ -71,19 +71,18 @@ const uploadImage = (req, res) => {
         msg: "Error Uploading Image"
       })
     } else {
-      db.ProfileImage.findOneAndRemove({ user: req.params.user_id }, (err, foundImage) => {
-        if (err) {
-          console.log(err);
-          return;
-        }
-      })
+      // db.Image.findOneAndRemove({ user: req.params.user_id }, (err, foundImage) => {
+      //   if (err) {
+      //     console.log(err);
+      //     return;
+      //   }
+      // })
 
       console.log("REQ FILE", req.file);
-      // create new profile image
-      let newImage = new db.ProfileImage({
-        user: req.params.user_id,
-        name: req.file.filename,
-        mimetype: req.file.mimetype,
+      // create new image
+      let newImage = new db.Image({
+        post: req.params.post_id,
+        imageName: req.file.filename,
       });
       newImage.save();
       res.json(newImage)
@@ -92,7 +91,7 @@ const uploadImage = (req, res) => {
 }
 
 module.exports = {
-  index: profileImages,
-  show: profileImage,
+  index: Images,
+  show: Image,
   upload: uploadImage,
 }
