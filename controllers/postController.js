@@ -36,7 +36,7 @@ const createPost = (req, res) => {
     caption: req.body.caption,
     location: req.body.location
   };
-  let userId = req.params.user_id;
+
 
   db.Post.create(newPost, (err, createdPost) => {
     if (err) {

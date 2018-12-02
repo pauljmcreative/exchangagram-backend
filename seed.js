@@ -1,6 +1,14 @@
 let db = require("./models");
 // const User = db.User;
 
+// let avatars = [
+//   {
+//     user: ,
+//     avatarName: ''
+//   }
+// ]
+
+
 // let userList = [
 //   {
 //     name: 'Amanda Kissnhug',

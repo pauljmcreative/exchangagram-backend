@@ -12,14 +12,16 @@ let Comment = require("./comment");
 // let Following = require("./following");
 // let Like = require("./like");
 let Image = require("./Image");
+let Avatar = require("./avatar");
 
 
 module.exports = {
   User: User,
   Post: Post,
   Comment: Comment,
+  Image: Image,
+  Avatar: Avatar,
   // Follower: Follower,
   // Following: Following,
   // Like: Like,
-  Image: Image,
 }

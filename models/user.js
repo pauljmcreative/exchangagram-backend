@@ -17,7 +17,7 @@ let UserSchema = new Schema({
   },
   fb_id: String,
   twitter_id: String,
-  profile_url: String,
+  avatar_url: String,
   aboutMe: {
     type: String,
     default: "Write something here!"

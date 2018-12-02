@@ -146,6 +146,13 @@ app.put("/api/users/:id", controllers.user.update);
 app.get("/api/images", controllers.Images.index);
 app.get("/api/images/:post_id", controllers.Images.show);
 app.post("/api/images/:post_id/upload", controllers.Images.upload);
+
+// Avatars //
+app.get("/api/avatars", controllers.avatar.index)
+app.get("/api/avatars/:user_id", controllers.avatar.show);
+// app.post("/api/avatars/:user_id/upload", controllers.Avatar.upload)
+// app.put("/api/avatars/:id", controllers.Avatar.update);
+
 // Posts //
 app.get("/api/posts", controllers.post.index);
 app.get("/api/posts/:id", controllers.post.show);
