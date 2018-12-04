@@ -32,33 +32,43 @@ const getUsers = (req, res) => {
 
 // GET /api/users/:id //
 const getUser = (req, res) => {
-  jwt.verify(req.token, "secretKey", (err, authData) => {
+  let id = req.params.id;
+  console.log("GET SHOW BQWJDJWD", id)
+  db.User.findById(id, (err, user) => {
     if (err) {
-      res.send({ err: true, message: `No user found.` });
-    } else {
-      db.User.findById(req.params.id, (err, user) => {
-        if (err) {
-          console.log(err);
-          return;
-        }
-        if (user) {
-          let userInfo = {
-            id: user._id,
-            name: user.name,
-            username: user.username,
-            email: user.email,
-            aboutMe: user.aboutMe,
-            joinDate: user.joinDate
-          };
-          res.json({
-            user: userInfo,
-            authData
-          });
-        }
-      });
+      console.log(err);
+      return;
     }
+    res.json(user);
   });
-};
+  // jwt.verify(req.token, "secretKey", (err, authData) => {
+  //   if (err) {
+  //     res.send({ err: true, message: `No user found.` });
+  //   } else {
+  //     db.User.findById(req.params.id, (err, user) => {
+  //       if (err) {
+  //         console.log(err);
+  //         return;
+  //       }
+  //       if (user) {
+  //         let userInfo = {
+  //           id: user._id,
+  //           name: user.name,
+  //           username: user.username,
+  //           email: user.email,
+  //           aboutMe: user.aboutMe,
+  //           joinDate: user.joinDate
+  //         };
+  //         res.json({
+  //           user: userInfo,
+  //           authData
+  //         });
+  //       }
+  //     });
+  //   }
+  // });
+
+}
 
 
 // POST /api/users/create
@@ -194,36 +204,63 @@ const userLogin = (req, res) => {
 
 // PUT / api / users /: id //
 const updateUser = (req, res) => {
-  jwt.verify(req.token, "secretKey", (err, authData) => {
+  let id = req.params.id;
+  let update = req.body;
+  console.log("IN PUT", id, update);
+  db.User.findByIdAndUpdate(id, update, { new: true }, (err, updatedUser) => {
     if (err) {
-      res.sendStatus(403);
-    } else {
-      let id = req.params.id;
-      let update = req.body;
-      db.User.findByIdAndUpdate(
-        id,
-        update,
-        { new: true },
-        (err, user) => {
-          if (err) {
-            console.log(err);
-            return;
-          }
-          let userInfo = {
-            id: user._id,
-            name: user.name,
-            username: user.username,
-            email: user.email,
-            aboutMe: user.aboutMe,
-            joinDate: user.joinDate
-          }
-          res.json({
-            user: userInfo,
-          });
-        }
-      );
+      console.log(error);
+      return;
     }
-  });
+    let user = {
+      id: updatedUser._id,
+      name: updatedUser.name,
+      username: updatedUser.username,
+      email: updatedUser.email,
+      joinDate: updatedUser.joinDate
+    };
+
+    jwt.sign({ user: user }, "secretKey", (err, token) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      console.log("JWT")
+      res.json({
+        token: token
+      });
+    });
+  })
+  // jwt.verify(req.token, "secretKey", (err, authData) => {
+  //   if (err) {
+  //     res.sendStatus(403);
+  //   } else {
+  //     let id = req.params.id;
+  //     let update = req.body;
+  //     db.User.findByIdAndUpdate(
+  //       id,
+  //       update,
+  //       { new: true },
+  //       (err, user) => {
+  //         if (err) {
+  //           console.log(err);
+  //           return;
+  //         }
+  //         let userInfo = {
+  //           id: user._id,
+  //           name: user.name,
+  //           username: user.username,
+  //           email: user.email,
+  //           aboutMe: user.aboutMe,
+  //           joinDate: user.joinDate
+  //         }
+  //         res.json({
+  //           user: userInfo,
+  //         });
+  //       }
+  //     );
+  //   }
+  // });
 };
 
 module.exports = {

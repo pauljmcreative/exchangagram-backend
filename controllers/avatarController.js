@@ -71,12 +71,12 @@ const uploadAvatar = (req, res) => {
         msg: "Error Uploading Avatar"
       })
     } else {
-      // db.Avatar.findOneAndRemove({ user: req.params.user_id }, (err, foundAvatar) => {
-      //   if (err) {
-      //     console.log(err);
-      //     return;
-      //   }
-      // })
+      db.Avatar.findOneAndRemove({ user: req.params.user_id }, (err, foundAvatar) => {
+        if (err) {
+          console.log(err);
+          return;
+        }
+      })
 
       console.log("REQ FILE", req.file);
       // create new Avatar
@@ -93,6 +93,6 @@ const uploadAvatar = (req, res) => {
 module.exports = {
   index: getAvatars,
   show: showAvatar,
-  // upload: uploadAvatar,
+  upload: uploadAvatar,
 }
 

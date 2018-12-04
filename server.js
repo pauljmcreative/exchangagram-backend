@@ -13,38 +13,38 @@ const port = process.env.PORT || 4000;
 
 
 
-// Set Storage Engine //
-const storage = multer.diskStorage({
-  destination: './public/uploads/',
-  filename: function (req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-  }
-});
+// // Set Storage Engine //
+// const storage = multer.diskStorage({
+//   destination: './public/uploads/',
+//   filename: function (req, file, cb) {
+//     cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+//   }
+// });
 
-// Init Upload //
-const upload = multer({
-  storage: storage,
-  limits: { fileSize: 1000000 },
-  fileFilter: function (req, file, cb) {
-    checkFileType(file, cb);
-  }
-}).single('myImage');
+// // Init Upload //
+// const upload = multer({
+//   storage: storage,
+//   limits: { fileSize: 1000000 },
+//   fileFilter: function (req, file, cb) {
+//     checkFileType(file, cb);
+//   }
+// }).single('myImage');
 
-// Check File Type //
-function checkFileType(file, cb) {
-  // Allowed extensions
-  const filetypes = /jpeg|jpg|png|gif/;
-  // Check Extension
-  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-  // Check mimetype
-  const mimetype = filetypes.test(file.mimetype);
+// // Check File Type //
+// function checkFileType(file, cb) {
+//   // Allowed extensions
+//   const filetypes = /jpeg|jpg|png|gif/;
+//   // Check Extension
+//   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+//   // Check mimetype
+//   const mimetype = filetypes.test(file.mimetype);
 
-  if (mimetype && extname) {
-    return cb(null, true);
-  } else {
-    cb('Error: Images Only');
-  }
-}
+//   if (mimetype && extname) {
+//     return cb(null, true);
+//   } else {
+//     cb('Error: Images Only');
+//   }
+// }
 
 
 
@@ -96,44 +96,9 @@ const verifyToken = (req, res, next) => {
 }
 
 
-
-
-// // EJS //
-// app.set('view engine', 'ejs');
-
-// Routes //
-// app.get('/', (req, res) => res.send('Whatup fools!'));
-// app.get('/', (req, res) => res.render('index'));
-// app.post('/upload', (req, res) => {
-//   upload(req, res, (err) => {
-//     if (err) {
-//       res.render('index', {
-//         msg: err
-//       });
-//     } else {
-//       if (req.file == undefined) {
-//         res.render('index', {
-//           msg: 'Error: No File Selected!'
-//         });
-//       } else {
-//         res.render('index', {
-//           msg: 'File Uploaded!',
-//           file: `uploads/${req.file.filename}`
-//         });
-//       }
-//     }
-//   });
-// });
-
-
-
-
-
-
-
-app.get("/image/:imagename", (req, res) => {
-  res.sendFile("public/uploads/" + req.params.imagename, { root: __dirname });
-})
+// app.get("/image/:imagename", (req, res) => {
+//   res.sendFile("public/uploads/" + req.params.imagename, { root: __dirname });
+// })
 
 // Users //
 app.get("/api/users", controllers.user.index);
@@ -148,10 +113,10 @@ app.get("/api/images/:post_id", controllers.Images.show);
 app.post("/api/images/:post_id/upload", controllers.Images.upload);
 
 // Avatars //
-app.get("/api/avatars", controllers.avatar.index)
+app.get("/api/avatars", controllers.avatar.index);
 app.get("/api/avatars/:user_id", controllers.avatar.show);
-// app.post("/api/avatars/:user_id/upload", controllers.Avatar.upload)
-// app.put("/api/avatars/:id", controllers.Avatar.update);
+app.post("/api/avatars/:user_id/upload", controllers.avatar.upload);
+// app.put("/api/avatars/:user_id/upload", controllers.avatar.update);
 
 // Posts //
 app.get("/api/posts", controllers.post.index);
@@ -167,8 +132,12 @@ app.post("/api/comments/create/:user_id/:post_id", controllers.comment.create);
 app.delete("/api/comments/:id", controllers.comment.delete)
 app.delete("/api/comments/post/:post_id", controllers.comment.deleteMany);
 
-// // Followers //
-// // app.get("/api/followers", controllers.followers.show);
+// Followers //
+app.get("/api/follows", controllers.follow.get);
+app.post("/api/follows/:followee_id", controllers.follow.create);
+app.delete("/api/follows/:followee_id", controllers.follow.delete);
+
+
 
 // // Following //
 // // app.get("/api/following", controllers.following.show);

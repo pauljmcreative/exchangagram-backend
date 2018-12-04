@@ -8,9 +8,7 @@ mongoose.connect(
 let User = require("./user");
 let Post = require("./post");
 let Comment = require("./comment");
-// let Follower = require("./follower");
-// let Following = require("./following");
-// let Like = require("./like");
+let Follow = require("./follow");
 let Image = require("./Image");
 let Avatar = require("./avatar");
 
@@ -21,7 +19,6 @@ module.exports = {
   Comment: Comment,
   Image: Image,
   Avatar: Avatar,
-  // Follower: Follower,
-  // Following: Following,
+  Follow: Follow,
   // Like: Like,
 }
