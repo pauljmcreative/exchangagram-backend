@@ -58,7 +58,7 @@ destroy = (req, res) => {
   });
 }
 
-// GET /api/following/
+// GET /api/follows/
 const getAllFollow = (req, res) => {
   db.Follow.find({}, (err, follow) => {
     if (err) {
@@ -69,10 +69,43 @@ const getAllFollow = (req, res) => {
   })
 }
 
+// GET /api/follows/:followee_id/:follower_id
+// Check if someone is following somebody
+const findFollowModel = (req, res) => {
+  db.Follow.find({ follower: req.params.follower_id, followee: req.params.followee_id }, (err, foundFollow) => {
+    if (err) throw Error(err);
+
+    res.json(foundFollow);
+  })
+}
+
+// GET /api/follows/:followee_id
+// Check for all people that is following somebody
+const findFollowers = (req, res) => {
+  db.Follow.find({ followee: req.params.followee_id }, (err, foundFollow) => {
+    if (err) throw Error(err);
+
+    res.json(foundFollow);
+  })
+}
+
+// GET /api/follows/:follower_id
+// Check for all people that somebody is following
+const findFollowing = (req, res) => {
+  db.Follow.find({ follower: req.params.follower_id }, (err, foundFollow) => {
+    if (err) throw Error(err);
+
+    res.json(foundFollow);
+  })
+}
+
 
 
 module.exports = {
-  get: getAllFollow,
+  getAll: getAllFollow,
+  getOneFollow: findFollowModel,
+  findFollowers: findFollowers,
+  findFollowing: findFollowing,
   create: store,
   delete: destroy,
 }

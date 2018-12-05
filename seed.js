@@ -90,7 +90,7 @@ let db = require("./models");
 
 // });
 
-db.Image.deleteMany({}, (err, posts) => {
+db.Avatar.deleteMany({}, (err, posts) => {
   // db.Post.create(postList, (err, posts) => {
   //   if (err) {
   //     return console.log('error', err);

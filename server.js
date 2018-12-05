@@ -138,9 +138,12 @@ app.delete("/api/comments/:id", controllers.comment.delete)
 app.delete("/api/comments/post/:post_id", controllers.comment.deleteMany);
 
 // Followers //
-// app.get("/api/follows", controllers.follow.get);
-// app.post("/api/follows/:followee_id", controllers.follow.create);
-// app.delete("/api/follows/:followee_id", controllers.follow.delete);
+app.get("/api/follows", controllers.follow.getAll);
+app.get("/api/follows/:followee_id/:follower_id", controllers.follow.getOneFollow);
+app.get("/api/follows/followers/:followee_id", controllers.follow.findFollowers);
+app.get("/api/follows/following/:follower_id", controllers.follow.findFollowing);
+app.post("/api/follows/:followee_id", controllers.follow.create);
+app.delete("/api/follows/:followee_id", controllers.follow.delete);
 
 
 
