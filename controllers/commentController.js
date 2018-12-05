@@ -18,6 +18,7 @@ const commentsIndex = (req, res) => {
 // GET /api/comments/:post_id
 const getPostComments = (req, res) => {
   let postId = req.params.post_id;
+  console.log(postId)
   db.Comment.find({ post: { _id: postId } })
     .sort({ dateCreated: -1 })
     .populate("user")

@@ -15,7 +15,7 @@ let db = require("./models");
 //     username: 'amandak1',
 //     password: 'amandak123',
 //     email: 'amandak@amandak.com',
-//     profile_url: 'https://picsum.photos/200/300/?random',
+//     avatar_url: 'https://picsum.photos/200/300/?random',
 //     aboutMe: 'I am lonely and live with my 12 cats',
 //   },
 //   {
@@ -23,7 +23,7 @@ let db = require("./models");
 //     username: 'bend1',
 //     password: 'bend123',
 //     email: 'bend@bend.com',
-//     profile_url: 'https://picsum.photos/200/300/?random',
+//     avatar_url: 'https://picsum.photos/200/300/?random',
 //     aboutMe: 'I am a trucker with a sensitive side',
 //   },
 //   {
@@ -31,7 +31,7 @@ let db = require("./models");
 //     username: 'arthurr1',
 //     password: 'arthurr123',
 //     email: 'arthurr@arthurr.com',
-//     profile_url: 'https://picsum.photos/200/300/?random',
+//     avatar_url: 'https://picsum.photos/200/300/?random',
 //     aboutMe: 'I am super old and crotchety',
 //   },
 // ]
@@ -85,12 +85,13 @@ let db = require("./models");
 //     console.log('All users: ', users);
 //     console.log('Created ', users.length, 'users');
 //   });
+//   process.exit();
 // });
 // db.Image.deleteMany({}, (err, images) => {
 
 // });
 
-db.Avatar.deleteMany({}, (err, posts) => {
+db.Comment.deleteMany({}, (err, posts) => {
   // db.Post.create(postList, (err, posts) => {
   //   if (err) {
   //     return console.log('error', err);
