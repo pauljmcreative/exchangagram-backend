@@ -19,13 +19,15 @@ const getPosts = (req, res) => {
 
 const getPost = (req, res) => {
   let id = req.params.id
-  db.Post.findById(id, (err, foundPost) => {
-    if (err) {
-      console.log(err);
-      return
-    }
-    res.json(foundPost);
-  })
+  db.Post.findById(id)
+    .populate("user")
+    .exec((err, foundPost) => {
+      if (err) {
+        console.log(err);
+        return
+      }
+      res.json(foundPost);
+    })
 }
 
 // POST /api/posts/new/:user_id
@@ -39,6 +41,8 @@ const createPost = (req, res) => {
 
 
   db.Post.create(newPost, (err, createdPost) => {
+    let userId = req.params.user_id
+    console.log(userId);
     if (err) {
       console.log(err);
       return;

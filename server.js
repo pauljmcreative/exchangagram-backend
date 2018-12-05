@@ -95,10 +95,15 @@ const verifyToken = (req, res, next) => {
   }
 }
 
+// Node serving images
+app.get("/image/:imagename", (req, res) => {
+  res.sendFile("public/uploads/" + req.params.imagename, { root: __dirname });
+})
 
-// app.get("/image/:imagename", (req, res) => {
-//   res.sendFile("public/uploads/" + req.params.imagename, { root: __dirname });
-// })
+// Node serving avatars
+app.get("/avatars/:avatarname", (req, res) => {
+  res.sendFile("public/uploads/" + req.params.avatarname, { root: __dirname });
+})
 
 // Users //
 app.get("/api/users", controllers.user.index);
@@ -116,7 +121,6 @@ app.post("/api/images/:post_id/upload", controllers.Images.upload);
 app.get("/api/avatars", controllers.avatar.index);
 app.get("/api/avatars/:user_id", controllers.avatar.show);
 app.post("/api/avatars/:user_id/upload", controllers.avatar.upload);
-// app.put("/api/avatars/:user_id/upload", controllers.avatar.update);
 
 // Posts //
 app.get("/api/posts", controllers.post.index);
@@ -127,15 +131,16 @@ app.delete("/api/posts/:id", controllers.post.delete);
 
 // Comments //
 app.get("/api/comments", controllers.comment.index);
+// app.get("/api/comments/post/:post_id/", controllers.comment.postComments);
 app.get("/api/comments/:post_id/", controllers.comment.getComments);
 app.post("/api/comments/create/:user_id/:post_id", controllers.comment.create);
 app.delete("/api/comments/:id", controllers.comment.delete)
 app.delete("/api/comments/post/:post_id", controllers.comment.deleteMany);
 
 // Followers //
-app.get("/api/follows", controllers.follow.get);
-app.post("/api/follows/:followee_id", controllers.follow.create);
-app.delete("/api/follows/:followee_id", controllers.follow.delete);
+// app.get("/api/follows", controllers.follow.get);
+// app.post("/api/follows/:followee_id", controllers.follow.create);
+// app.delete("/api/follows/:followee_id", controllers.follow.delete);
 
 
 

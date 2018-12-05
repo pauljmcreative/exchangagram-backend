@@ -86,8 +86,11 @@ let db = require("./models");
 //     console.log('Created ', users.length, 'users');
 //   });
 // });
+// db.Image.deleteMany({}, (err, images) => {
 
-db.Post.deleteMany({}, (err, posts) => {
+// });
+
+db.Image.deleteMany({}, (err, posts) => {
   // db.Post.create(postList, (err, posts) => {
   //   if (err) {
   //     return console.log('error', err);

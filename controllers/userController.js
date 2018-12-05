@@ -33,7 +33,6 @@ const getUsers = (req, res) => {
 // GET /api/users/:id //
 const getUser = (req, res) => {
   let id = req.params.id;
-  console.log("GET SHOW BQWJDJWD", id)
   db.User.findById(id, (err, user) => {
     if (err) {
       console.log(err);
@@ -122,8 +121,8 @@ const createUser = (req, res) => {
             });
           });
 
-          let newDefaultImage = new db.Image({
-            name: "default.png",
+          let newDefaultImage = new db.Avatar({
+            avatarName: "default-avatar.png",
           })
 
           newDefaultImage.user = newUser._id;
