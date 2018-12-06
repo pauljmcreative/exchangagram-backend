@@ -5,6 +5,7 @@ const Post = db.Post;
 
 const getPosts = (req, res) => {
   db.Post.find({})
+    .sort({ dateCreated: -1 })
     .populate("user")
     .exec((err, posts) => {
       if (err) {
