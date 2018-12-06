@@ -19,6 +19,6 @@ module.exports = {
   Comment: Comment,
   Image: Image,
   Avatar: Avatar,
-  // Follow: Follow,
+  Follow: Follow,
   // Like: Like,
 }
