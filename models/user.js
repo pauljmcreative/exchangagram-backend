@@ -22,14 +22,14 @@ let UserSchema = new Schema({
     type: String,
     default: "Write something here!"
   },
-  following: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Follow'
-  }],
-  followers: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Follow'
-  }],
+  // following: [{
+  //   type: Schema.Types.ObjectId,
+  //   ref: 'Follow'
+  // }],
+  // followers: [{
+  //   type: Schema.Types.ObjectId,
+  //   ref: 'Follow'
+  // }],
   joinDate: {
     type: Date,
     default: Date.now

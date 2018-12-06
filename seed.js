@@ -80,18 +80,18 @@ let db = require("./models");
 
 
 // db.User.deleteMany({}, (err, users) => {
-//   db.User.create(userList, (err, users) => {
-//     if (err) return console.log('error', err);
-//     console.log('All users: ', users);
-//     console.log('Created ', users.length, 'users');
-//   });
-//   process.exit();
+// db.User.create(userList, (err, users) => {
+//   if (err) return console.log('error', err);
+//   console.log('All users: ', users);
+//   console.log('Created ', users.length, 'users');
+// });
+// process.exit();
 // });
 // db.Image.deleteMany({}, (err, images) => {
 
 // });
 
-db.Comment.deleteMany({}, (err, posts) => {
+db.Avatar.deleteMany({}, (err, posts) => {
   // db.Post.create(postList, (err, posts) => {
   //   if (err) {
   //     return console.log('error', err);

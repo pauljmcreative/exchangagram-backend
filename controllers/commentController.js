@@ -25,7 +25,7 @@ const getPostComments = (req, res) => {
     .exec((err, comments) => {
       if (err) {
         console.log(err);
-        return;
+        res.status(404);
       }
       res.json(comments);
     });
@@ -36,6 +36,7 @@ const getPostComments = (req, res) => {
 const createComment = (req, res) => {
   let postId = req.params.post_id;
   let userId = req.params.user_id;
+  console.log(`HERE IS THE UNKNOWN`, userId);
   let newComment = req.body;
 
   db.Comment.create(newComment, (err, createdComment) => {
