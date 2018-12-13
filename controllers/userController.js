@@ -5,22 +5,22 @@ const bcrypt = require('bcryptjs');
 
 // GET /api/users //
 const getUsers = (req, res) => {
-  // jwt.verify(req.token, "secretKey", (err, authData) => {
-  //   if (err) {
-  //     res.send({ err: true, message: `No users found.` });
-  //   } else {
-  //     db.User.find({}, (err, users) => {
-  //       if (err) {
-  //         console.log(err);
-  //         return;
-  //       }
-  //       res.json({
-  //         users: users,
-  //         authData
-  //       });
-  //     });
-  //   }
-  // });
+  jwt.verify(req.token, "secretKey", (err, authData) => {
+    if (err) {
+      res.send({ err: true, message: `No users found.` });
+    } else {
+      db.User.find({}, (err, users) => {
+        if (err) {
+          console.log(err);
+          return;
+        }
+        res.json({
+          users: users,
+          authData
+        });
+      });
+    }
+  });
   db.User.find({}, (err, users) => {
     if (err) {
       console.log(err);
@@ -33,39 +33,39 @@ const getUsers = (req, res) => {
 // GET /api/users/:id //
 const getUser = (req, res) => {
   let id = req.params.id;
-  db.User.findById(id, (err, user) => {
-    if (err) {
-      console.log(err);
-      return;
-    }
-    res.json(user);
-  });
-  // jwt.verify(req.token, "secretKey", (err, authData) => {
+  // db.User.findById(id, (err, user) => {
   //   if (err) {
-  //     res.send({ err: true, message: `No user found.` });
-  //   } else {
-  //     db.User.findById(req.params.id, (err, user) => {
-  //       if (err) {
-  //         console.log(err);
-  //         return;
-  //       }
-  //       if (user) {
-  //         let userInfo = {
-  //           id: user._id,
-  //           name: user.name,
-  //           username: user.username,
-  //           email: user.email,
-  //           aboutMe: user.aboutMe,
-  //           joinDate: user.joinDate
-  //         };
-  //         res.json({
-  //           user: userInfo,
-  //           authData
-  //         });
-  //       }
-  //     });
+  //     console.log(err);
+  //     return;
   //   }
+  //   res.json(user);
   // });
+  jwt.verify(req.token, "secretKey", (err, authData) => {
+    if (err) {
+      res.send({ err: true, message: `No user found.` });
+    } else {
+      db.User.findById(req.params.id, (err, user) => {
+        if (err) {
+          console.log(err);
+          return;
+        }
+        if (user) {
+          let userInfo = {
+            id: user._id,
+            name: user.name,
+            username: user.username,
+            email: user.email,
+            aboutMe: user.aboutMe,
+            joinDate: user.joinDate
+          };
+          res.json({
+            user: userInfo,
+            authData
+          });
+        }
+      });
+    }
+  });
 
 }
 
@@ -91,7 +91,6 @@ const createUser = (req, res) => {
         if (foundUserEmail) {
           console.log("userEmailerror");
           console.log(foundUserEmail);
-
           res.status(400).send({ error: "Email already in use" });
         } else {
           // create new user
@@ -206,60 +205,60 @@ const updateUser = (req, res) => {
   let id = req.params.id;
   let update = req.body;
   console.log("IN PUT", id, update);
-  db.User.findByIdAndUpdate(id, update, { new: true }, (err, updatedUser) => {
-    if (err) {
-      console.log(error);
-      return;
-    }
-    let user = {
-      id: updatedUser._id,
-      name: updatedUser.name,
-      username: updatedUser.username,
-      email: updatedUser.email,
-      joinDate: updatedUser.joinDate
-    };
-
-    jwt.sign({ user: user }, "secretKey", (err, token) => {
-      if (err) {
-        console.log(err);
-        return;
-      }
-      console.log("JWT")
-      res.json({
-        token: token
-      });
-    });
-  })
-  // jwt.verify(req.token, "secretKey", (err, authData) => {
+  // db.User.findByIdAndUpdate(id, update, { new: true }, (err, updatedUser) => {
   //   if (err) {
-  //     res.sendStatus(403);
-  //   } else {
-  //     let id = req.params.id;
-  //     let update = req.body;
-  //     db.User.findByIdAndUpdate(
-  //       id,
-  //       update,
-  //       { new: true },
-  //       (err, user) => {
-  //         if (err) {
-  //           console.log(err);
-  //           return;
-  //         }
-  //         let userInfo = {
-  //           id: user._id,
-  //           name: user.name,
-  //           username: user.username,
-  //           email: user.email,
-  //           aboutMe: user.aboutMe,
-  //           joinDate: user.joinDate
-  //         }
-  //         res.json({
-  //           user: userInfo,
-  //         });
-  //       }
-  //     );
+  //     console.log(error);
+  //     return;
   //   }
-  // });
+  //   let user = {
+  //     id: updatedUser._id,
+  //     name: updatedUser.name,
+  //     username: updatedUser.username,
+  //     email: updatedUser.email,
+  //     joinDate: updatedUser.joinDate
+  //   };
+
+  //   jwt.sign({ user: user }, "secretKey", (err, token) => {
+  //     if (err) {
+  //       console.log(err);
+  //       return;
+  //     }
+  //     console.log("JWT")
+  //     res.json({
+  //       token: token
+  //     });
+  //   });
+  // })
+  jwt.verify(req.token, "secretKey", (err, authData) => {
+    if (err) {
+      res.sendStatus(403);
+    } else {
+      let id = req.params.id;
+      let update = req.body;
+      db.User.findByIdAndUpdate(
+        id,
+        update,
+        { new: true },
+        (err, user) => {
+          if (err) {
+            console.log(err);
+            return;
+          }
+          let userInfo = {
+            id: user._id,
+            name: user.name,
+            username: user.username,
+            email: user.email,
+            aboutMe: user.aboutMe,
+            joinDate: user.joinDate
+          }
+          res.json({
+            user: userInfo,
+          });
+        }
+      );
+    }
+  });
 };
 
 module.exports = {

@@ -88,6 +88,7 @@ const verifyToken = (req, res, next) => {
     // Set the token //
     req.token = bearerToken;
     // Next middleware //
+    console.log("TOKENNNNN", req.token)
     next();
   } else {
     // Forbidden //
@@ -106,11 +107,11 @@ app.get("/avatars/:avatarname", (req, res) => {
 })
 
 // Users //
-app.get("/api/users", controllers.user.index);
-app.get("/api/users/:id", controllers.user.show);
+app.get("/api/users", verifyToken, controllers.user.index);
+app.get("/api/users/:id", verifyToken, controllers.user.show);
 app.post("/api/users/signup", controllers.user.create);
 app.post("/api/users/signin", controllers.user.login);
-app.put("/api/users/:id", controllers.user.update);
+app.put("/api/users/:id", verifyToken, controllers.user.update);
 
 // Images //
 app.get("/api/images", controllers.Images.index);
