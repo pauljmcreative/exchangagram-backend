@@ -6,9 +6,12 @@ let db = require("../models");
 
 // Set Storage Engine
 const storage = multer.diskStorage({
-  destination: 'public/uploads',
-  filename: function (req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+  destination: "public/uploads",
+  filename: function(req, file, cb) {
+    cb(
+      null,
+      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+    );
   }
 });
 
@@ -33,9 +36,9 @@ const checkFileType = (file, cb) => {
   if (mimetype && extname) {
     return cb(null, true);
   } else {
-    cb('Error: Images Only.')
+    cb("Error: Images Only.");
   }
-}
+};
 
 // GET /api/avatars
 const getAvatars = (req, res) => {
@@ -48,7 +51,7 @@ const getAvatars = (req, res) => {
       }
       res.json(foundAvatars);
     });
-}
+};
 
 // GET /api/avatars/:user_id
 const showAvatar = (req, res) => {
@@ -59,40 +62,42 @@ const showAvatar = (req, res) => {
       return;
     }
     res.json(foundAvatar);
-  })
-}
+  });
+};
 
 // POST /api/:user_id/upload
 const uploadAvatar = (req, res) => {
-  upload(req, res, (err) => {
+  upload(req, res, err => {
     if (err) {
       res.json({
         error: err,
         msg: "Error Uploading Avatar"
-      })
+      });
     } else {
-      db.Avatar.findOneAndRemove({ user: req.params.user_id }, (err, foundAvatar) => {
-        if (err) {
-          console.log(err);
-          return;
+      db.Avatar.findOneAndRemove(
+        { user: req.params.user_id },
+        (err, foundAvatar) => {
+          if (err) {
+            console.log(err);
+            return;
+          }
         }
-      })
+      );
 
       console.log("REQ FILE", req.file);
       // create new Avatar
       let newAvatar = new db.Avatar({
         user: req.params.user_id,
-        avatarName: req.file.filename,
+        avatarName: req.file.filename
       });
       newAvatar.save();
-      res.json(newAvatar)
+      res.json(newAvatar);
     }
-  })
-}
+  });
+};
 
 module.exports = {
   index: getAvatars,
   show: showAvatar,
-  upload: uploadAvatar,
-}
-
+  upload: uploadAvatar
+};
