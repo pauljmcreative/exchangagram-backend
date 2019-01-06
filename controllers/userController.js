@@ -1,7 +1,6 @@
-let db = require('../models');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
-
+let db = require("../models");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 
 // GET /api/users //
 const getUsers = (req, res) => {
@@ -26,8 +25,8 @@ const getUsers = (req, res) => {
       console.log(err);
       return;
     }
-    res.json(users)
-  })
+    res.json(users);
+  });
 };
 
 // GET /api/users/:id //
@@ -40,35 +39,7 @@ const getUser = (req, res) => {
   //   }
   //   res.json(user);
   // });
-  jwt.verify(req.token, "secretKey", (err, authData) => {
-    if (err) {
-      res.send({ err: true, message: `No user found.` });
-    } else {
-      db.User.findById(req.params.id, (err, user) => {
-        if (err) {
-          console.log(err);
-          return;
-        }
-        if (user) {
-          let userInfo = {
-            id: user._id,
-            name: user.name,
-            username: user.username,
-            email: user.email,
-            aboutMe: user.aboutMe,
-            joinDate: user.joinDate
-          };
-          res.json({
-            user: userInfo,
-            authData
-          });
-        }
-      });
-    }
-  });
-
-}
-
+};
 
 // POST /api/users/create
 const createUser = (req, res) => {
@@ -101,7 +72,6 @@ const createUser = (req, res) => {
             password: req.body.password
           });
 
-
           // salt and hash password with bcryptjs //
           bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(newUser.password, salt, (err, hash) => {
@@ -115,14 +85,14 @@ const createUser = (req, res) => {
                   console.log(err);
                   return user;
                 }
+                console.log("user successfully created");
               });
-              // res.json(newUser);
             });
           });
 
           let newDefaultImage = new db.Avatar({
-            avatarName: "default-avatar.png",
-          })
+            avatarName: "default-avatar.png"
+          });
 
           newDefaultImage.user = newUser._id;
 
@@ -163,37 +133,35 @@ const userLogin = (req, res) => {
     }
 
     console.log(foundUser);
-    console.log(req.body)
+    console.log(req.body);
     // check for user
     if (foundUser) {
       // check password
-      console.log("FOUNDs")
-      bcrypt
-        .compare(password, foundUser.password)
-        .then(isMatch => {
-          if (isMatch) {
-            console.log("BCRYPT")
-            // user confirmed, send web token
-            let user = {
-              id: foundUser._id,
-              name: foundUser.name,
-              username: foundUser.username,
-              email: foundUser.email,
-              joinDate: foundUser.joinDate
-            };
+      console.log("FOUNDs");
+      bcrypt.compare(password, foundUser.password).then(isMatch => {
+        if (isMatch) {
+          console.log("BCRYPT");
+          // user confirmed, send web token
+          let user = {
+            id: foundUser._id,
+            name: foundUser.name,
+            username: foundUser.username,
+            email: foundUser.email,
+            joinDate: foundUser.joinDate
+          };
 
-            jwt.sign({ user: user }, "secretKey", (err, token) => {
-              if (err) {
-                console.log(err);
-                return;
-              }
-              console.log("JWT")
-              res.json({
-                token: token
-              });
+          jwt.sign({ user: user }, "secretKey", (err, token) => {
+            if (err) {
+              console.log(err);
+              return;
+            }
+            console.log("JWT");
+            res.json({
+              token: token
             });
-          }
-        });
+          });
+        }
+      });
     } else {
       res.status(404).json({ message: "No user found" });
     }
@@ -205,7 +173,31 @@ const updateUser = (req, res) => {
   let id = req.params.id;
   let update = req.body;
   console.log("IN PUT", id, update);
-  // db.User.findByIdAndUpdate(id, update, { new: true }, (err, updatedUser) => {
+  db.User.findByIdAndUpdate(id, update, { new: true }, (err, updatedUser) => {
+    if (err) {
+      console.log(error);
+      return;
+    }
+    let user = {
+      id: updatedUser._id,
+      name: updatedUser.name,
+      username: updatedUser.username,
+      email: updatedUser.email,
+      joinDate: updatedUser.joinDate
+    };
+
+    jwt.sign({ user: user }, "secretKey", (err, token) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      console.log("JWT");
+      res.json({
+        token: token
+      });
+    });
+  });
+  // jwt.verify(req.token, "secretKey", (err, authData) => {
   //   if (err) {
   //     console.log(error);
   //     return;
