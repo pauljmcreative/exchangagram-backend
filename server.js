@@ -12,7 +12,7 @@ const port = process.env.PORT || 4000;
 // Set Storage Engine //
 const storage = multer.diskStorage({
   destination: "./public/uploads/",
-  filename: function(req, file, cb) {
+  filename: function (req, file, cb) {
     cb(
       null,
       file.fieldname + "-" + Date.now() + path.extname(file.originalname)
@@ -24,7 +24,7 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage: storage,
   limits: { fileSize: 1000000 },
-  fileFilter: function(req, file, cb) {
+  fileFilter: function (req, file, cb) {
     checkFileType(file, cb);
   }
 }).single("myImage");
@@ -73,6 +73,7 @@ app.use(express.static("./public"));
 // Authorization: Bearer <access_token> //
 const verifyToken = (req, res, next) => {
   // Get auth header value //
+  console.log(req.headers["authorization"])
   const bearerHeader = req.headers["authorization"];
   // CHeck if bearder is undefined //
   if (typeof bearerHeader !== "undefined") {

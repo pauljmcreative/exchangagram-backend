@@ -31,14 +31,20 @@ const getUsers = (req, res) => {
 
 // GET /api/users/:id //
 const getUser = (req, res) => {
-  let id = req.params.id;
-  // db.User.findById(id, (err, user) => {
-  //   if (err) {
-  //     console.log(err);
-  //     return;
-  //   }
-  //   res.json(user);
-  // });
+  jwt.verify(req.token, "secretKey", (err, authData) => {
+    if (err) {
+      throw err;
+    } else {
+      let id = req.params.id;
+      db.User.findById(id, (err, user) => {
+        if (err) {
+          console.log(err);
+          return;
+        }
+        res.json(user);
+      });
+    }
+  });
 };
 
 // POST /api/users/create
@@ -170,86 +176,38 @@ const userLogin = (req, res) => {
 
 // PUT / api / users /: id //
 const updateUser = (req, res) => {
-  let id = req.params.id;
-  let update = req.body;
-  console.log("IN PUT", id, update);
-  db.User.findByIdAndUpdate(id, update, { new: true }, (err, updatedUser) => {
-    if (err) {
-      console.log(error);
-      return;
-    }
-    let user = {
-      id: updatedUser._id,
-      name: updatedUser.name,
-      username: updatedUser.username,
-      email: updatedUser.email,
-      joinDate: updatedUser.joinDate
-    };
-
-    jwt.sign({ user: user }, "secretKey", (err, token) => {
-      if (err) {
-        console.log(err);
-        return;
-      }
-      console.log("JWT");
-      res.json({
-        token: token
-      });
-    });
-  });
-  // jwt.verify(req.token, "secretKey", (err, authData) => {
-  //   if (err) {
-  //     console.log(error);
-  //     return;
-  //   }
-  //   let user = {
-  //     id: updatedUser._id,
-  //     name: updatedUser.name,
-  //     username: updatedUser.username,
-  //     email: updatedUser.email,
-  //     joinDate: updatedUser.joinDate
-  //   };
-
-  //   jwt.sign({ user: user }, "secretKey", (err, token) => {
-  //     if (err) {
-  //       console.log(err);
-  //       return;
-  //     }
-  //     console.log("JWT")
-  //     res.json({
-  //       token: token
-  //     });
-  //   });
-  // })
   jwt.verify(req.token, "secretKey", (err, authData) => {
     if (err) {
-      res.sendStatus(403);
+      throw err;
     } else {
       let id = req.params.id;
       let update = req.body;
-      db.User.findByIdAndUpdate(
-        id,
-        update,
-        { new: true },
-        (err, user) => {
+      console.log("IN PUT", id, update);
+      db.User.findByIdAndUpdate(id, update, { new: true }, (err, updatedUser) => {
+        if (err) {
+          console.log(error);
+          return;
+        }
+        let user = {
+          id: updatedUser._id,
+          name: updatedUser.name,
+          username: updatedUser.username,
+          email: updatedUser.email,
+          joinDate: updatedUser.joinDate
+        };
+
+        jwt.sign({ user: user }, "secretKey", (err, token) => {
           if (err) {
             console.log(err);
             return;
           }
-          let userInfo = {
-            id: user._id,
-            name: user.name,
-            username: user.username,
-            email: user.email,
-            aboutMe: user.aboutMe,
-            joinDate: user.joinDate
-          }
+          console.log("JWT");
           res.json({
-            user: userInfo,
+            token: token
           });
-        }
-      );
-    }
+        });
+      });
+    };
   });
 };
 
