@@ -155,7 +155,6 @@ app.delete("/api/follows/:followee_id", controllers.follow.delete);
 // // app.get("/api/likes", controllers.likes.show);
 
 // Server //
-// server = app.listen(process.env.PORT || 3000)
 server = app.listen(port, () =>
   console.log(`HTTP server listening at port ${port}`)
 );
